@@ -19,6 +19,59 @@ Route::get('/', function(){
 });
 
 
+
+Route::get('/practice-creating', function() {
+
+    # Instantiate a new Book model class
+    $book = new Book(); 
+
+    # Set 
+    $book->title = 'Cat in the Hat';
+    $book->author = 'Dr. Suess';
+    $book->published = 1960;
+    
+    # This is where the Eloquent ORM magic happens
+    $book->save();
+
+    return 'A new book has been added! Check your database to see...';
+
+});
+
+
+Route::get('/practice-reading', function() {
+
+    # The all() method will fetch all the rows from a Model/table
+    $books = Book::all();
+
+    # Make sure we have results before trying to print them...
+    if($books->isEmpty() != TRUE) {
+
+        # Typically we'd pass $books to a View, but for quick and dirty demonstration, let's just output here...
+        foreach($books as $book) {
+            echo $book->title.'<br>';
+        }
+    }
+    else {
+        return 'No books found';
+    }
+
+});
+
+
+Route::get('/practice-reading-one-book', function() {
+
+    $book = Book::where('author', 'LIKE', '%Scott%')->first();
+
+    if($book) {
+        return $book->title;
+    }
+    else {
+        return 'Book not found.';
+    }
+
+});
+
+
 Route::get('mysql-test', function() {
 
     # Print environment
